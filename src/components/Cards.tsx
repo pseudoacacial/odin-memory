@@ -9,14 +9,7 @@ export const Cards = () => {
         name: string
         url: string
     }]
-
-    const [pokemonList, setPokemonList] = useState<PokemonList|[]>([])
     const [images, setImages] = useState<string[]>([])
-
-
-    // console.log(pokemonList[0]?.url)
-
-    console.log(images)
 
     interface Pokemon {
         sprites: {
@@ -32,50 +25,36 @@ export const Cards = () => {
                 return res.json(); 
             })
             .then((data) => {
-                console.log('fetched pokemon from api')
-                setPokemonList(data.results)
-            })
+                console.log('fetched pokemon list from api')
+                return data.results
+            }).then((res:PokemonList) => {
+                Promise.all(
+                    res.map((pokemon)=>{
+                        return fetch(pokemon.url).then(res=>res.json())
+                    })
+                ).then((res) => {
+                    return res.map((pokemon:Pokemon) => {
+                        if (pokemon.sprites.front_shiny_female) {
+                            return pokemon.sprites.front_shiny_female
+                        }
+                        else if (pokemon.sprites.front_shiny) {
+                            return pokemon.sprites.front_shiny
+                        }
+                        else if (pokemon.sprites.front_female) {
+                            return pokemon.sprites.front_female
+                        } else {
+                            return pokemon.sprites.front_default
+                        }
+                    })
+                }).then(res=>{setImages(res)})
+            
+            })      
     }, [])
-    useEffect(()=>{
-        const populatedImageList:string[] = [];
-        pokemonList.map((pokemon)=>{
-            fetch(pokemon.url)
-            .then((res) => {
-                return res.json(); 
-            })
-            .then((pokemon:Pokemon) => {
-                // console.log(pokemon)
-                const length = populatedImageList.length
-                if (pokemon.sprites.front_shiny_female) {
-                    populatedImageList[length]= pokemon.sprites.front_shiny_female
-                }
-                else if (pokemon.sprites.front_shiny) {
-                    populatedImageList[length]=pokemon.sprites.front_shiny
-                }
-                else if (pokemon.sprites.front_female) {
-                    populatedImageList[length]=pokemon.sprites.front_female
-                } else {
-                    populatedImageList[length]=pokemon.sprites.front_default
-                }
-                setTimeout(()=>{setImages(populatedImageList)}, 100)
-                // setImages(populatedImageList)
-                console.log("updated images list")
-            }).then(()=> {
-                setImages(populatedImageList)
-            })
-        })
-        
-    },[pokemonList]) 
-    // useEffect(()=> {
-    //     setImages(populatedImageList)
-    // })
-    
 
 
   return (
     <>
     {images.map((image, index)=> <div key={index} className='pokemon' style={{background:`url(${image})`}}></div>)}
-    {images.length}
     </>
   )
 }
