@@ -70,12 +70,36 @@ export const Cards = (props:{number:number}) => {
             setStoredPokemon(res);
           });
       });
+      
   }, []);
 
+
+  const randomizePokemon = () => {
+    const array = [...storedPokemon];
+
+    let currentIndex = array.length;
+    console.log(currentIndex)
+
+    // While there remain elements to shuffle...
+    while (currentIndex != 0) {
+  
+      // Pick a remaining element...
+      let randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+    setStoredPokemon(array)
+    console.log(storedPokemon)
+  }
+
+
   return (
-    <>
+    <div className="cards">
       {storedPokemon.map((pokemon) => (
-        <div className="pokemon" key={pokemon.id}>
+        <div className="pokemon" key={pokemon.id} onClick={randomizePokemon}>
           <div
             className="image"
             style={{ backgroundImage: `url(${pokemon.image})` }}
@@ -83,6 +107,6 @@ export const Cards = (props:{number:number}) => {
           <div className="name">{pokemon.name}</div>
         </div>
       ))}
-    </>
+    </div>
   );
 };
