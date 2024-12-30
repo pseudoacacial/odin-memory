@@ -5,6 +5,7 @@
     display: flex;
     flex-wrap: wrap;
     overflow-anchor: none;
+
 }
 .pokemon {
   cursor: url("../assets/bunny2.png"), auto;
@@ -13,6 +14,7 @@
   height: 100px;
   display: flex;
   flex-direction: column;
+  border-radius: 5px;
   .image {
     width: 100%;
     height: 100%;
@@ -22,4 +24,7 @@
   }
   .name {
   }
+}
+.memorized {
+    // border:4px solid tomato;
 }
