@@ -1,6 +1,3 @@
-import React from "react";
-import { ReactDOM } from "react";
-import { useState, useEffect } from "react";
 import "../style/Cards.scss";
 
 interface storedPokemon {

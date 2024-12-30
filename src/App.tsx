@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import { Cards } from "./components/Cards";
 import { GameControls } from "./components/GameControls";
 import "./style/App.scss";
@@ -108,7 +106,7 @@ function App() {
 
   // const [tries, setTries] = useState(0);
 
-  const restart = (value) => {
+  const restart = (value:number) => {
     setNumber(value)
     setStoredPokemon(storedPokemon.map((element)=>({...element, memorized:false })))
   };
